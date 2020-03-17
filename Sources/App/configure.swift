@@ -16,13 +16,17 @@ public func configure(_ app: Application) throws {
     app.databases.use(try .mysql(url: url), as: .mysql)
     // uncomment to serve files from /Public folder
     app.middleware.use(CORSMiddleware())
-    // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
+    app.middleware.use(ErrorMiddleware() { request, error in
+        // TODO: Make this much nicer.
+        return Response(status: .internalServerError)
+    })
 
     app.databases.use(.sqlite(.file("db.sqlite")), as: .sqlite)
     
     try app.jwt.signers.use(jwksJSON: jwksString)
 
-    app.migrations.add(CreateTodo())
+    app.migrations.add(CreateCategory())
+    app.migrations.add(CreateProduct())
 
     // register routes
     try routes(app)
