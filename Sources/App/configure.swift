@@ -2,7 +2,6 @@ import Fluent
 import FluentMySQLDriver
 import Vapor
 import JWT
-import SendGrid
 
 // configures your application
 public func configure(_ app: Application) throws {
@@ -21,7 +20,7 @@ public func configure(_ app: Application) throws {
         return Response(status: .internalServerError)
     })
 
-    app.databases.use(.sqlite(.file("db.sqlite")), as: .sqlite)
+//    app.databases.use(.sqlite(.file("db.sqlite")), as: .sqlite)
     
     try app.jwt.signers.use(jwksJSON: jwksString)
 
